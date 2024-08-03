@@ -54,6 +54,8 @@ This Python script downloads map tiles from Thunderforest's Mobile Atlas for spe
 
 ## Usage
 
+The tiles will be saved in a folder named tiles on your desktop, organized by zoom level and tile coordinates.
+
 Run the script to start downloading tiles:
 
 ```bash
