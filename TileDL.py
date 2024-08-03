@@ -1,69 +1,65 @@
 import os
-import math
 import requests
+from math import log, tan, cos, pi
 from tqdm import tqdm
 
-API_KEY = 'Insert API key'
-TILE_URL = f'Insert API URL'
-
-# Expanded bounds for regions
-REGIONS = {
-    'Southern_Ontario': {
-        'min_lat': 41.5, 'max_lat': 46.5,
-        'min_lon': -84.5, 'max_lon': -74.5
-    },
-    'Las_Vegas': {
-        'min_lat': 35.0, 'max_lat': 37.5,
-        'min_lon': -116.5, 'max_lon': -114.0
-    },
-    'Grand_Canyon': {
-        'min_lat': 34.0, 'max_lat': 37.0,
-        'min_lon': -114.5, 'max_lon': -110.5
-    }
+# Define the bounding boxes and zoom levels
+regions = {
+    "southern_ontario": (41.5, -83.5, 45.5, -75.0),
+    "las_vegas": (35.5, -116.0, 37.5, -114.0),
+    "grand_canyon": (35.5, -113.0, 37.0, -111.0)
 }
+zoom_levels = range(1, 15)  # Focusing on zoom levels 1 to 14
 
-OUTPUT_DIR = os.path.join(os.path.expanduser("~"), "Desktop", "tiles")
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# API Key and output directory
+api_key = "your_api_key_here"
+output_dir = os.path.join(os.path.expanduser("~"), "Desktop", "tiles")
+os.makedirs(output_dir, exist_ok=True)
 
 def lon2tilex(lon, zoom):
     return int((lon + 180.0) / 360.0 * (1 << zoom))
 
 def lat2tiley(lat, zoom):
-    return int((1.0 - math.log(math.tan(lat * math.pi / 180.0) + 1.0 / math.cos(lat * math.pi / 180.0)) / math.pi) / 2.0 * (1 << zoom))
+    return int((1.0 - log(tan(lat * pi / 180.0) + 1.0 / cos(lat * pi / 180.0)) / pi) / 2.0 * (1 << zoom))
 
 def download_tile(zoom, x, y):
-    url = TILE_URL.format(z=zoom, x=x, y=y)
-    tile_dir = os.path.join(OUTPUT_DIR, str(zoom), str(x))
+    url = f"https://tile.thunderforest.com/mobile-atlas/{zoom}/{x}/{y}.png?apikey={api_key}"
+    tile_dir = os.path.join(output_dir, str(zoom), str(x))
     tile_path = os.path.join(tile_dir, f"{y}.png")
     os.makedirs(tile_dir, exist_ok=True)
-    
-    # Check if the tile already exists
-    if os.path.exists(tile_path):
-        print(f"Tile {zoom}/{x}/{y} already exists, skipping...")
-        return
-    
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open(tile_path, "wb") as file:
-            file.write(response.content)
-    else:
-        print(f"Failed to download tile {zoom}/{x}/{y}: {response.status_code} {response.reason}")
+
+    if not os.path.exists(tile_path):
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(tile_path, "wb") as file:
+                file.write(response.content)
+        else:
+            print(f"Failed to download tile {zoom}/{x}/{y}: {response.status_code} {response.reason}")
 
 def main():
-    for zoom in range(1, 15):
-        for region_name, bounds in REGIONS.items():
-            min_tilex = lon2tilex(bounds['min_lon'], zoom)
-            max_tilex = lon2tilex(bounds['max_lon'], zoom)
-            min_tiley = lat2tiley(bounds['max_lat'], zoom)  # max_lat is used here to align with top-left origin
-            max_tiley = lat2tiley(bounds['min_lat'], zoom)
-            
-            # Create a list of (x, y) coordinates for tqdm
-            tile_coords = [(x, y) for x in range(min_tilex, max_tilex + 1) for y in range(min_tiley, max_tiley + 1)]
+    total_tiles = 0
 
-            # Use tqdm to show progress
-            for x, y in tqdm(tile_coords, desc=f"Zoom {zoom}", unit="tile"):
-                download_tile(zoom, x, y)
+    for zoom in zoom_levels:
+        for min_lat, min_lon, max_lat, max_lon in regions.values():
+            start_x = lon2tilex(min_lon, zoom)
+            end_x = lon2tilex(max_lon, zoom)
+            start_y = lat2tiley(max_lat, zoom)
+            end_y = lat2tiley(min_lat, zoom)
+
+            total_tiles += (end_x - start_x + 1) * (end_y - start_y + 1)
+
+    with tqdm(total=total_tiles, desc="Downloading tiles") as pbar:
+        for zoom in zoom_levels:
+            for min_lat, min_lon, max_lat, max_lon in regions.values():
+                start_x = lon2tilex(min_lon, zoom)
+                end_x = lon2tilex(max_lon, zoom)
+                start_y = lat2tiley(max_lat, zoom)
+                end_y = lat2tiley(min_lat, zoom)
+
+                for x in range(start_x, end_x + 1):
+                    for y in range(start_y, end_y + 1):
+                        download_tile(zoom, x, y)
+                        pbar.update(1)
 
 if __name__ == "__main__":
     main()
-
