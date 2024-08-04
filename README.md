@@ -52,6 +52,24 @@ This Python script downloads map tiles from Thunderforest's Mobile Atlas for spe
     zoom_levels = range(1, 15)  # Focusing on zoom levels 1 to 14
     ```
 
+4. Choose map style
+
+    ```python
+    # mapstyle = "cycle"
+    # mapstyle = "transport"
+    # mapstyle = "landscape"
+    # mapstyle = "outdoors"
+    # mapstyle = "transport-dark"
+    # mapstyle = "spinal-map"
+    # mapstyle = "pioneer"
+    mapstyle = "mobile-atlas"
+    # mapstyle = "neighbourhood"
+    # mapstyle = "atlas"
+    ```
+    
+
+   
+   
 ## Usage
 
 The tiles will be saved in a folder named tiles on your desktop, organized by zoom level and tile coordinates.
@@ -60,3 +78,12 @@ Run the script to start downloading tiles:
 
 ```bash
 python TileDL.py
+```
+## Updates
+2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
+
+## Contributing
+If you find any issues or have suggestions for improvements, please feel free to create an issue or submit a pull request.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details
