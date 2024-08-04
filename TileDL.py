@@ -3,13 +3,24 @@ import requests
 from math import log, tan, cos, pi
 from tqdm import tqdm
 
-# Define the bounding boxes and zoom levels
+# Define the bounding boxes and zoom levels. Below are random examples.
 regions = {
     "southern_ontario": (41.5, -83.5, 45.5, -75.0),
     "las_vegas": (35.5, -116.0, 37.5, -114.0),
     "grand_canyon": (35.5, -113.0, 37.0, -111.0)
 }
 zoom_levels = range(1, 15)  # Focusing on zoom levels 1 to 14
+
+# mapstyle = "cycle"
+# mapstyle = "transport"
+# mapstyle = "landscape"
+# mapstyle = "outdoors"
+# mapstyle = "transport-dark"
+# mapstyle = "spinal-map"
+# mapstyle = "pioneer"
+mapstyle = "mobile-atlas"
+# mapstyle = "neighbourhood"
+# mapstyle = "atlas"
 
 # API Key and output directory
 api_key = "your_api_key_here"
@@ -23,7 +34,7 @@ def lat2tiley(lat, zoom):
     return int((1.0 - log(tan(lat * pi / 180.0) + 1.0 / cos(lat * pi / 180.0)) / pi) / 2.0 * (1 << zoom))
 
 def download_tile(zoom, x, y):
-    url = f"https://tile.thunderforest.com/mobile-atlas/{zoom}/{x}/{y}.png?apikey={api_key}"
+    url = f"https://tile.thunderforest.com/{mapstyle}/{zoom}/{x}/{y}.png?apikey={api_key}"
     tile_dir = os.path.join(output_dir, str(zoom), str(x))
     tile_path = os.path.join(tile_dir, f"{y}.png")
     os.makedirs(tile_dir, exist_ok=True)
