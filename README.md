@@ -1,6 +1,6 @@
 # Map Tile Downloader
 
-This Python script downloads map tiles from Thunderforest's Mobile Atlas for specified regions at multiple zoom levels. It supports resuming downloads by skipping already downloaded files and provides a progress bar to track the download progress.
+This Python script downloads map tiles from Thunderforest's Mobile Atlas for specified regions at multiple zoom levels. It supports resuming downloads by skipping already downloaded files and provides a progress bar to track the download progress. This was designed to make map tiles that are compatible with the Lilygo T-Deck running Ripple 
 
 ## Features
 
