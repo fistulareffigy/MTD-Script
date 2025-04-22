@@ -8,12 +8,15 @@ This Python script downloads map tiles from Thunderforest's Mobile Atlas for spe
 - Specify multiple regions and zoom levels
 - Skip already downloaded files
 - Progress bar to track download progress
+- New utility (KMLtoTiles.py) supports gross parsing of a KML,
+  then fetching tiles at waypoints and routes
 
 ## Requirements
 
 - Python 3.x
 - `requests` library
 - `tqdm` library
+- For KMLtoTiles: `fastkml` library
 
 ## Installation
 
@@ -70,7 +73,7 @@ This Python script downloads map tiles from Thunderforest's Mobile Atlas for spe
 
    
    
-## Usage
+## Usage (TileDL.py)
 
 The tiles will be saved in a folder named tiles on your desktop, organized by zoom level and tile coordinates.
 
@@ -79,6 +82,50 @@ Run the script to start downloading tiles:
 ```bash
 python TileDL.py
 ```
+## Updates
+2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
+
+## Contributing
+If you find any issues or have suggestions for improvements, please feel free to create an issue or submit a pull request.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details
+
+
+## Usage (KMLtoTiles.py)
+
+Run the script to start downloading tiles:
+
+```bash
+python KMLtoTiles.py <kmlfile> -k your_api_key_here -o ~/map -s outdoors -m 1000
+
+KMLtoTiles.py [-h]
+	      [-k APIKEY]
+              [-s {outdoors,mobile-atlas,cycle,transport,landscape,transport-dark,spinal-map,pioneer,neighbourhood,atlas}]
+	      [-m MAXTILES] [-o OUTDIR] [--minzoom MINZOOM] [--maxzoom MAXZOOM] [--latrgn LATRGN] [--lonrgn LONRGN]
+	      kmlfile
+
+Process KML file into selected tiles
+
+positional arguments:
+  kmlfile
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -k APIKEY, --apikey APIKEY
+  -s {outdoors,mobile-atlas,cycle,transport,landscape,transport-dark,spinal-map,pioneer,neighbourhood,atlas}, --style {outdoors,mobile-atlas,cycle,transport,landscape,transport-dark,spinal-map,pioneer,neighbourhood,atlas}
+  -m MAXTILES, --maxtiles MAXTILES
+  -o OUTDIR, --outdir OUTDIR
+                        output directory (default: /home/ghn/maps)
+  --minzoom MINZOOM     minimum zoom level
+  --maxzoom MAXZOOM     maximum zoom level
+  --latrgn LATRGN
+  --lonrgn LONRGN
+
+Note: zoom levels are specified as power-of-two fractions of the globe, i.e. zoom=3 means eight slices of latitude and
+longitude
+
+
 ## Updates
 2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
 
