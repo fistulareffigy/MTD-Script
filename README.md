@@ -82,15 +82,6 @@ Run the script to start downloading tiles:
 ```bash
 python TileDL.py
 ```
-## Updates
-2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
-
-## Contributing
-If you find any issues or have suggestions for improvements, please feel free to create an issue or submit a pull request.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details
-
 
 ## Usage (KMLtoTiles.py)
 
@@ -124,10 +115,11 @@ optional arguments:
 
 Note: zoom levels are specified as power-of-two fractions of the globe, i.e. zoom=3 means eight slices of latitude and
 longitude
-
+```
 
 ## Updates
 2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
+2025-04-23 Thanks Greg Nelson for creating the KML estension.
 
 ## Contributing
 If you find any issues or have suggestions for improvements, please feel free to create an issue or submit a pull request.
