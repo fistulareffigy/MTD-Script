@@ -30,8 +30,9 @@ This Python script downloads map tiles from Thunderforest's Mobile Atlas for spe
 2. Install the required Python packages:
 
     ```bash
-    pip install requests tqdm
+    pip install requests tqdm fastkml
     ```
+    Note: fastkml is not required to use `TileDL.py`
 
 ## Configuration
 
