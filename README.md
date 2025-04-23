@@ -30,8 +30,9 @@ This Python script downloads map tiles from Thunderforest's Mobile Atlas for spe
 2. Install the required Python packages:
 
     ```bash
-    pip install requests tqdm
+    pip install requests tqdm fastkml
     ```
+    Note: fastkml is not required to use `TileDL.py`
 
 ## Configuration
 
@@ -82,15 +83,6 @@ Run the script to start downloading tiles:
 ```bash
 python TileDL.py
 ```
-## Updates
-2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
-
-## Contributing
-If you find any issues or have suggestions for improvements, please feel free to create an issue or submit a pull request.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details
-
 
 ## Usage (KMLtoTiles.py)
 
@@ -122,12 +114,32 @@ optional arguments:
   --latrgn LATRGN
   --lonrgn LONRGN
 
-Note: zoom levels are specified as power-of-two fractions of the globe, i.e. zoom=3 means eight slices of latitude and
-longitude
+```
 
+The map projection used for tilings is [EPSG:3857](https://epsg.io/3857), sometimes called the "Web Mapping System." It is a variation of the [Mercator Projection](https://en.wikipedia.org/wiki/Mercator_projection). It can be helpful to think of zoom levels as dividing the globe by powers-of-two. This is very straightforward for longitude, but more complex for latitude where the projection plays out. 
+
+|Zoom Level|Deg Lon Per Tile|DMS Lon Per Tile|Width of Tile at 45&deg;N|
+|---------:|---------------:|---------------:|------------:|
+|  1       | 180.00 | 180&deg;00'00" | 10001km |
+|  2       |  90.00 |  90&deg;00'00" |  6667km |
+|  3       |  45.00 |  45&deg;00'00" |  3501km |
+|  4	   |  22.50 |  22&deg;30'00" |  1768km |
+|  5       |  11.25 |  11&deg;15'00" |   886km |
+|  6       |   5.63 |   5&deg;37'30" |   443km |
+|  7       |   2.81 |   2&deg;48'45" |	  222km |
+|  8       |   1.41 |   1&deg;24'23" |   111km |
+|  9       |   0.70 |   0&deg;42'11" |   5544m |
+|  10      |   0.35 |   0&deg;21'06" |	  2772m |
+|  11      |   0.18 |   0&deg;10'28" |   1386m |
+|  12      |   0.09 |   0&deg;05'16" |    693m |
+|  13      |   0.04 |	0&deg;02'38" |    346m |
+|  14      |   0.02 |   0&deg;01'19" |    173m |
+|  15      |   0.01 |   0&deg;00'40" |     87m |
 
 ## Updates
 2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
+
+2025-04-23 Thanks Greg Nelson for creating the KML estension.
 
 ## Contributing
 If you find any issues or have suggestions for improvements, please feel free to create an issue or submit a pull request.

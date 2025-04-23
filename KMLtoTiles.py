@@ -47,17 +47,17 @@ def kml_to_regions(kmlfile: Path, latrgn: float = 0.1, lonrgn: float = 0.1) -> D
     for p in pmarks:
         pts = list(kml_find_all(p, of_type=Point))
         if len(pts) == 1:
-            coords = pts[0].kml_coordinates.coords[0]
-            lon = coords[0]
-            lat = coords[1]
+            coord = pts[0].kml_coordinates.coords[0]
+            lon = coord[0]
+            lat = coord[1]
             resdict[p.name] = expand_gps(lat, lon, latrgn, lonrgn)
         else:
             coord_idx = 0
             lstrs = list(kml_find_all(p, of_type=LineString))
             for lstr in lstrs:
                 for coord in lstr.kml_coordinates.coords:
-                    lon = coords[0]
-                    lat = coords[1]
+                    lon = coord[0]
+                    lat = coord[1]
                     name = f'{p.name}_{coord_idx:06}'
                     resdict[name] = expand_gps(lat, lon, latrgn, lonrgn)
                     coord_idx += 1
