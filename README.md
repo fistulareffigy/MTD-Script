@@ -137,6 +137,7 @@ The map projection used for tilings is [EPSG:3857](https://epsg.io/3857), someti
 
 ## Updates
 2024-08-04 Thanks Scott Powell for suggesting and adding the map style selection function.
+
 2025-04-23 Thanks Greg Nelson for creating the KML estension.
 
 ## Contributing
